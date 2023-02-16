@@ -20,4 +20,5 @@ from sneaker_shop import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('item/<int:pk>', views.item, name='item'),
+    path('item/buy/<int:pk>', views.buy, name='buy'),
 ]
