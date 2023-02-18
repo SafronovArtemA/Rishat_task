@@ -1,9 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Item
 import stripe
-from shop.settings import api_key
+import os
+from dotenv import load_dotenv, find_dotenv
 
-stripe.api_key = api_key
+load_dotenv(find_dotenv())
+
+stripe.api_key = os.getenv('API_KEY')
 
 
 def item(request, pk):
