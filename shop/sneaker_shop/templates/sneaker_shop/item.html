@@ -11,7 +11,16 @@
             <h5 class="card-title">{{ data.name }}</h5>
             <p class="card-text">{{ data.description }}</p>
             <h5 class="card-title pricing-card-title">₽ {{ data.price }}</h5>
-            <a href="buy/{{ data.id }}" class="btn btn-primary">Buy</a>
+            <form action="buy/{{ data.id }}" method="get">
+              <label for="currency">Валюта для оплаты: </label>
+              <select name="currency" id="currency">
+              <option value="1">Рубль</option>
+              <option value="2">Доллар</option>
+              </select>
+              <br>
+              <br>
+              <button type="submit" class="btn btn-primary">Buy</button>
+            </form>
           </div>
         </div>
     </div>

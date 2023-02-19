@@ -3,6 +3,9 @@ from .models import Item
 import stripe
 import os
 from dotenv import load_dotenv, find_dotenv
+import requests
+
+currencies = {'1': 'RUB', '2': 'USD'}
 
 load_dotenv(find_dotenv())
 
@@ -16,15 +19,21 @@ def item(request, pk):
 
 
 def buy(request, pk):
+    currency = currencies[request.GET.get("currency")]
     data = get_object_or_404(Item, pk=pk)
+    if currency not in 'RUB':
+        rate = requests.get('https://www.cbr-xml-daily.ru/daily_json.js').json()['Valute'][currency]['Value']
+        price = int(data.price / rate * 100)
+    else:
+        price = int(data.price * 100)
     session = stripe.checkout.Session.create(
         line_items=[{
             'price_data': {
-                'currency': 'rub',
+                'currency': currency,
                 'product_data': {
                     'name': data.name,
                 },
-                'unit_amount': int(data.price * 100),
+                'unit_amount': price,
             },
             'quantity': 1,
         }],
